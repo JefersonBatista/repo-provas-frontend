@@ -2,7 +2,7 @@ import { SyntheticEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import api from "../services/api";
-import Form from "../styledComponents/authComponents/Form";
+import { Form, AuthInput, Button } from "../styledComponents/authComponents";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -43,21 +43,21 @@ export default function SignUp() {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <input
+      <AuthInput
         type="email"
         name="email"
         placeholder="Email"
         value={formData.email}
         onChange={handleChange}
       />
-      <input
+      <AuthInput
         type="password"
         name="password"
         placeholder="Senha"
         value={formData.password}
         onChange={handleChange}
       />
-      <input
+      <AuthInput
         type="password"
         name="repeatPassword"
         placeholder="Confirme sua senha"
@@ -65,9 +65,11 @@ export default function SignUp() {
         onChange={handleChange}
       />
 
-      <Link to="/">Já possuo cadastro</Link>
+      <div>
+        <Link to="/">Já possuo cadastro</Link>
 
-      <button type="submit">Cadastrar</button>
+        <Button type="submit">Cadastrar</Button>
+      </div>
     </Form>
   );
 }
