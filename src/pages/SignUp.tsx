@@ -13,6 +13,8 @@ export default function SignUp() {
     repeatPassword: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   function handleChange({
     target,
   }: {
@@ -24,8 +26,11 @@ export default function SignUp() {
   async function handleSubmit(event: SyntheticEvent) {
     event.preventDefault();
 
+    setLoading(true);
+
     if (formData.password !== formData.repeatPassword) {
       alert("Você inseriu senhas diferentes");
+      setLoading(false);
       return;
     }
 
@@ -38,6 +43,7 @@ export default function SignUp() {
       navigate("/");
     } catch (error: any) {
       alert(error.response.data);
+      setLoading(false);
     }
   }
 
@@ -49,6 +55,7 @@ export default function SignUp() {
         placeholder="Email"
         value={formData.email}
         onChange={handleChange}
+        disabled={loading}
       />
       <AuthInput
         type="password"
@@ -56,6 +63,7 @@ export default function SignUp() {
         placeholder="Senha"
         value={formData.password}
         onChange={handleChange}
+        disabled={loading}
       />
       <AuthInput
         type="password"
@@ -63,12 +71,15 @@ export default function SignUp() {
         placeholder="Confirme sua senha"
         value={formData.repeatPassword}
         onChange={handleChange}
+        disabled={loading}
       />
 
       <div>
-        <Link to="/">Já possuo cadastro</Link>
+        <Link to={loading ? "#" : "/"}>Já possuo cadastro</Link>
 
-        <Button type="submit">Cadastrar</Button>
+        <Button type="submit" disabled={loading}>
+          {loading ? "Cadastrando..." : "Cadastrar"}
+        </Button>
       </div>
     </Form>
   );

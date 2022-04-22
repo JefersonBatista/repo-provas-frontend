@@ -2,15 +2,20 @@ import { SyntheticEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import api from "../services/api";
+import useAuth from "../hooks/useAuth";
 import { Form, AuthInput, Button } from "../styledComponents/authComponents";
 
 export default function Login() {
   const navigate = useNavigate();
 
+  const { saveToken } = useAuth();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const [loading, setLoading] = useState(false);
 
   function handleChange({
     target,
@@ -23,12 +28,17 @@ export default function Login() {
   async function handleSubmit(event: SyntheticEvent) {
     event.preventDefault();
 
+    setLoading(true);
+
     try {
-      await api.auth.login(formData);
+      const { data } = await api.auth.login(formData);
+      const { token } = data;
+      saveToken(token);
 
       navigate("/tests-by-discipline");
     } catch (error: any) {
       alert(error.response.data);
+      setLoading(false);
     }
   }
 
@@ -40,6 +50,7 @@ export default function Login() {
         placeholder="Email"
         value={formData.email}
         onChange={handleChange}
+        disabled={loading}
       />
       <AuthInput
         type="password"
@@ -47,12 +58,15 @@ export default function Login() {
         placeholder="Senha"
         value={formData.password}
         onChange={handleChange}
+        disabled={loading}
       />
 
       <div>
-        <Link to="/">Não possuo cadastro</Link>
+        <Link to={loading ? "#" : "/sign-up"}>Não possuo cadastro</Link>
 
-        <Button type="submit">Entrar</Button>
+        <Button type="submit" disabled={loading}>
+          {loading ? "Entrando..." : "Entrar"}
+        </Button>
       </div>
     </Form>
   );
