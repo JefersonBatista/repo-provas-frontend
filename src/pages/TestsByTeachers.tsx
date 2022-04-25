@@ -29,9 +29,29 @@ export default function TestsByTeacher() {
     return teacher.teachersDisciplines.map((td) => {
       return td.tests.map((test) => {
         const { id, name } = test;
-        return { id, name, discipline: td.discipline.name };
+        return {
+          categoryId: test.category.id,
+          id,
+          name,
+          discipline: td.discipline.name,
+        };
       });
     });
+  }
+
+  function getTestCategoriesOfTeacher(teacher) {
+    const categoryTable = {};
+
+    teacher.teachersDisciplines.forEach((td) => {
+      td.tests.forEach((test) => {
+        const c = test.category;
+        if (!categoryTable[c.id]) {
+          categoryTable[c.id] = c;
+        }
+      });
+    });
+
+    return Object.values(categoryTable).sort((a, b) => a.id - b.id);
   }
 
   function logout() {
@@ -57,28 +77,33 @@ export default function TestsByTeacher() {
         Ir para provas separadas por disciplina
       </Link>
 
-      {teachers.map((teacher) => (
-        <div>
-          <h2>{teacher.name}</h2>
+      {teachers.map((teacher) => {
+        const categories = getTestCategoriesOfTeacher(teacher);
 
-          {/* <div>
-            {teacher.teachersDisciplines.map(
-              (td: { discipline: any }, index: number) => (
-                <div key={index}>
-                  <h3 key={td.discipline.id}>{td.discipline.name}</h3>
-                </div>
-              )
-            )}
-          </div> */}
-          {getTestsOfTeacher(teacher).map((td) => {
-            return td.map((test) => {
-              return (
-                <h4 key={test.id}>{`${test.name} (${test.discipline})`}</h4>
-              );
-            });
-          })}
-        </div>
-      ))}
+        return (
+          <div key={teacher.id}>
+            <h2>{teacher.name}</h2>
+
+            {categories.map((c) => (
+              <div key={c.id}>
+                <h3 key={c.id}>{c.name}</h3>
+
+                {getTestsOfTeacher(teacher).map((td) => {
+                  return td
+                    .filter((t) => t.categoryId === c.id)
+                    .map((test) => {
+                      return (
+                        <p
+                          key={test.id}
+                        >{`${test.name} (${test.discipline})`}</p>
+                      );
+                    });
+                })}
+              </div>
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 }

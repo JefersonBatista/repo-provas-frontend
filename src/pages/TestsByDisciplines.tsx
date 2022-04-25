@@ -31,21 +31,6 @@ export default function TestsByDisciplines() {
     return term.disciplines;
   }
 
-  /* function getTestCategories(term: {
-    disciplines: any[];
-  }): { id: number; name: string }[] {
-    const testCategories = {};
-
-    term.disciplines.forEach((discipline) => {
-      discipline.teachersDisciplines[0].tests.forEach((test) => {
-        if (!testCategories[test.category.name]) {
-          testCategories[test.category.name] = true;
-        }
-      });
-    });
-    return Object.keys(testCategories);
-  } */
-
   function getTestsOfDiscipline(discipline) {
     return discipline.teachersDisciplines.map((td) => {
       return td.tests.map((test) => {
@@ -114,6 +99,7 @@ export default function TestsByDisciplines() {
                       {categories.map((c) => (
                         <div key={c.id}>
                           <h4 key={c.id}>{c.name}</h4>
+
                           {getTestsOfDiscipline(discipline).map((td) => {
                             return td
                               .filter((t) => t.categoryId === c.id)
