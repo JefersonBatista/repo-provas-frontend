@@ -77,7 +77,7 @@ export default function SignUp() {
       <div>
         <Link to={loading ? "#" : "/"}>Já possuo cadastro</Link>
 
-        <Button type="submit" disabled={loading}>
+        <Button variant="contained" type="submit" disabled={loading}>
           {loading ? "Cadastrando..." : "Cadastrar"}
         </Button>
       </div>

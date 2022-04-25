@@ -31,7 +31,7 @@ export function AuthProvider({
 
   useEffect(() => {
     if (token) {
-      navigate("/tests-by-discipline");
+      navigate("/tests-by-disciplines");
     } else {
       navigate("/");
     }

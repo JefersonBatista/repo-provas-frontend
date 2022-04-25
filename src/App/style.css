@@ -3,3 +3,22 @@
   flex-direction: column;
   align-items: center;
 }
+
+.app a,
+.app button {
+  margin: 20px 0;
+}
+
+.app .tests {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.app .tests h3 {
+  margin-left: 15px;
+}
+
+.app .tests h4 {
+  margin-left: 30px;
+}

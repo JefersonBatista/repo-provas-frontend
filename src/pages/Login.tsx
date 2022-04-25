@@ -35,7 +35,7 @@ export default function Login() {
       const { token } = data;
       saveToken(token);
 
-      navigate("/tests-by-discipline");
+      navigate("/tests-by-disciplines");
     } catch (error: any) {
       alert(error.response.data);
       setLoading(false);
@@ -64,7 +64,7 @@ export default function Login() {
       <div>
         <Link to={loading ? "#" : "/sign-up"}>Não possuo cadastro</Link>
 
-        <Button type="submit" disabled={loading}>
+        <Button variant="contained" type="submit" disabled={loading}>
           {loading ? "Entrando..." : "Entrar"}
         </Button>
       </div>

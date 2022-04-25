@@ -7,6 +7,4 @@ async function login(login: Login) {
   return axiosInstance.post<{ token: string }>(`/auth/login`, login);
 }
 
-export default {
-  login,
-};
+export default { login };

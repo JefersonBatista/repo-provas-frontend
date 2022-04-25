@@ -1,6 +1,6 @@
 import SignUp from "./SignUp";
 import Login from "./Login";
-import TestsByDiscipline from "./TestsByDiscipline";
-import TestsByTeacher from "./TestsByTeacher";
+import TestsByDisciplines from "./TestsByDisciplines";
+import TestsByTeachers from "./TestsByTeachers";
 
-export { SignUp, Login, TestsByDiscipline, TestsByTeacher };
+export { SignUp, Login, TestsByDisciplines, TestsByTeachers };

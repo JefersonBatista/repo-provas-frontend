@@ -9,6 +9,4 @@ async function signUp(newUser: User) {
   return axiosInstance.post(`/users`, newUser);
 }
 
-export default {
-  signUp,
-};
+export default { signUp };
