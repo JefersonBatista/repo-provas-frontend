@@ -50,7 +50,12 @@ export default function TestsByDisciplines() {
     return discipline.teachersDisciplines.map((td) => {
       return td.tests.map((test) => {
         const { id, name } = test;
-        return { id, name, teacher: td.teacher.name };
+        return {
+          categoryId: test.category.id,
+          id,
+          name,
+          teacher: td.teacher.name,
+        };
       });
     });
   }
@@ -100,19 +105,28 @@ export default function TestsByDisciplines() {
             <div>
               {getDisciplines(term).map(
                 (discipline: { id: number; name: string }) => {
-                  // console.log(getTestCategoriesOfDiscipline(discipline));
+                  const categories = getTestCategoriesOfDiscipline(discipline);
+
                   return (
                     <div key={discipline.id}>
                       <h3 key={discipline.id}>{discipline.name}</h3>
-                      {getTestsOfDiscipline(discipline).map((td) => {
-                        return td.map((test) => {
-                          return (
-                            <h4
-                              key={test.id}
-                            >{`${test.name} (${test.teacher})`}</h4>
-                          );
-                        });
-                      })}
+
+                      {categories.map((c) => (
+                        <div key={c.id}>
+                          <h4 key={c.id}>{c.name}</h4>
+                          {getTestsOfDiscipline(discipline).map((td) => {
+                            return td
+                              .filter((t) => t.categoryId === c.id)
+                              .map((test) => {
+                                return (
+                                  <p
+                                    key={test.id}
+                                  >{`${test.name} (${test.teacher})`}</p>
+                                );
+                              });
+                          })}
+                        </div>
+                      ))}
                     </div>
                   );
                 }
