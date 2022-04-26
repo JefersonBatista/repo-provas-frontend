@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Input } from "@mui/material";
 
 import api from "../services/api";
 import {
@@ -14,6 +15,7 @@ export default function TestsByDisciplines() {
   const { token } = useAuth();
 
   const [terms, setTerms] = useState<TermWithTestsData[] | null>(null);
+  const [filter, setFilter] = useState<string>("");
 
   async function getTestsByDisciplines() {
     try {
@@ -29,7 +31,9 @@ export default function TestsByDisciplines() {
   }
 
   function getDisciplines(term: TermWithTestsData) {
-    return term.disciplines;
+    return term.disciplines.filter((discipline) =>
+      discipline.name.toLowerCase().includes(filter.toLowerCase())
+    );
   }
 
   function getTestsOfDiscipline(discipline: DisciplineWithTestsData) {
@@ -80,6 +84,15 @@ export default function TestsByDisciplines() {
         <Link to="/tests-by-teachers">
           Ir para provas separadas por pessoa instrutora
         </Link>
+
+        <Input
+          placeholder="Filtre por disciplina"
+          autoFocus
+          fullWidth
+          style={{ alignSelf: "center", marginBottom: "20px", height: "20px" }}
+          value={filter}
+          onChange={({ target }) => setFilter(target.value)}
+        />
 
         {terms.map((term, index) => (
           <div>

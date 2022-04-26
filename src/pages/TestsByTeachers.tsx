@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Input } from "@mui/material";
 
 import useAuth from "../hooks/useAuth";
 import api from "../services/api";
 import { TestsByTeachersType, TeacherWithTestsData } from "../services/test";
 import { Logo, Logout } from "../components";
+import { textAlign } from "@mui/system";
 
 export default function TestsByTeacher() {
   const { token } = useAuth();
 
   const [teachers, setTeachers] = useState<TeacherWithTestsData[] | null>(null);
+  const [filter, setFilter] = useState<string>("");
 
   async function getTestsByTeachers() {
     try {
@@ -73,33 +76,46 @@ export default function TestsByTeacher() {
           Ir para provas separadas por disciplina
         </Link>
 
-        {teachers.map((teacher) => {
-          const categories = getTestCategoriesOfTeacher(teacher);
+        <Input
+          placeholder="Filtre por pessoa instrutora"
+          autoFocus
+          fullWidth
+          style={{ alignSelf: "center", marginBottom: "20px", height: "20px" }}
+          value={filter}
+          onChange={({ target }) => setFilter(target.value)}
+        />
 
-          return (
-            <div key={teacher.id}>
-              <h2>{teacher.name}</h2>
+        {teachers
+          .filter((teacher) =>
+            teacher.name.toLowerCase().includes(filter.toLowerCase())
+          )
+          .map((teacher) => {
+            const categories = getTestCategoriesOfTeacher(teacher);
 
-              {categories.map((c) => (
-                <div key={c.id}>
-                  <h3 key={c.id}>{c.name}</h3>
+            return (
+              <div key={teacher.id}>
+                <h2>{teacher.name}</h2>
 
-                  {getTestsOfTeacher(teacher).map((td) => {
-                    return td
-                      .filter((t) => t.categoryId === c.id)
-                      .map((test) => {
-                        return (
-                          <p
-                            key={test.id}
-                          >{`${test.name} (${test.discipline})`}</p>
-                        );
-                      });
-                  })}
-                </div>
-              ))}
-            </div>
-          );
-        })}
+                {categories.map((c) => (
+                  <div key={c.id}>
+                    <h3 key={c.id}>{c.name}</h3>
+
+                    {getTestsOfTeacher(teacher).map((td) => {
+                      return td
+                        .filter((t) => t.categoryId === c.id)
+                        .map((test) => {
+                          return (
+                            <p
+                              key={test.id}
+                            >{`${test.name} (${test.discipline})`}</p>
+                          );
+                        });
+                    })}
+                  </div>
+                ))}
+              </div>
+            );
+          })}
       </div>
     </div>
   );
