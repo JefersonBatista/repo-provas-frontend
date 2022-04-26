@@ -2,6 +2,7 @@ import { SyntheticEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import api from "../services/api";
+import { Logo } from "../components";
 import { Form, AuthInput, Button } from "../styledComponents/authComponents";
 
 export default function SignUp() {
@@ -48,39 +49,42 @@ export default function SignUp() {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <AuthInput
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={formData.email}
-        onChange={handleChange}
-        disabled={loading}
-      />
-      <AuthInput
-        type="password"
-        name="password"
-        placeholder="Senha"
-        value={formData.password}
-        onChange={handleChange}
-        disabled={loading}
-      />
-      <AuthInput
-        type="password"
-        name="repeatPassword"
-        placeholder="Confirme sua senha"
-        value={formData.repeatPassword}
-        onChange={handleChange}
-        disabled={loading}
-      />
+    <>
+      <Logo />
+      <Form onSubmit={handleSubmit}>
+        <AuthInput
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          disabled={loading}
+        />
+        <AuthInput
+          type="password"
+          name="password"
+          placeholder="Senha"
+          value={formData.password}
+          onChange={handleChange}
+          disabled={loading}
+        />
+        <AuthInput
+          type="password"
+          name="repeatPassword"
+          placeholder="Confirme sua senha"
+          value={formData.repeatPassword}
+          onChange={handleChange}
+          disabled={loading}
+        />
 
-      <div>
-        <Link to={loading ? "#" : "/"}>Já possuo cadastro</Link>
+        <div>
+          <Link to={loading ? "#" : "/"}>Já possuo cadastro</Link>
 
-        <Button variant="contained" type="submit" disabled={loading}>
-          {loading ? "Cadastrando..." : "Cadastrar"}
-        </Button>
-      </div>
-    </Form>
+          <Button variant="contained" type="submit" disabled={loading}>
+            {loading ? "Cadastrando..." : "Cadastrar"}
+          </Button>
+        </div>
+      </Form>
+    </>
   );
 }

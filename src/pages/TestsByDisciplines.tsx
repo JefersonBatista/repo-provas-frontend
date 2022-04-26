@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import api from "../services/api";
 import {
@@ -8,12 +8,10 @@ import {
   DisciplineWithTestsData,
 } from "../services/test";
 import useAuth from "../hooks/useAuth";
-import { Button } from "../styledComponents/authComponents";
+import { Logo, Logout } from "../components";
 
 export default function TestsByDisciplines() {
-  const navigate = useNavigate();
-
-  const { token, removeToken } = useAuth();
+  const { token } = useAuth();
 
   const [terms, setTerms] = useState<TermWithTestsData[] | null>(null);
 
@@ -63,11 +61,6 @@ export default function TestsByDisciplines() {
     return Object.values(categoryTable).sort((a, b) => a.id - b.id);
   }
 
-  function logout() {
-    removeToken();
-    navigate("/");
-  }
-
   useEffect(() => {
     getTestsByDisciplines();
   }, []);
@@ -77,51 +70,54 @@ export default function TestsByDisciplines() {
   }
 
   return (
-    <div className="tests">
-      <Button variant="outlined" onClick={logout}>
-        Sair
-      </Button>
+    <div>
+      <div className="header">
+        <Logo />
+        <Logout />
+      </div>
 
-      <Link to="/tests-by-teachers">
-        Ir para provas separadas por pessoa instrutora
-      </Link>
+      <div className="tests">
+        <Link to="/tests-by-teachers">
+          Ir para provas separadas por pessoa instrutora
+        </Link>
 
-      {terms.map((term, index) => (
-        <div>
-          <h2 key={index}>{`${term.number}º Período`}</h2>
-          {true && (
-            <div>
-              {getDisciplines(term).map((discipline) => {
-                const categories = getTestCategoriesOfDiscipline(discipline);
+        {terms.map((term, index) => (
+          <div>
+            <h2 key={index}>{`${term.number}º Período`}</h2>
+            {true && (
+              <div>
+                {getDisciplines(term).map((discipline) => {
+                  const categories = getTestCategoriesOfDiscipline(discipline);
 
-                return (
-                  <div key={discipline.id}>
-                    <h3 key={discipline.id}>{discipline.name}</h3>
+                  return (
+                    <div key={discipline.id}>
+                      <h3 key={discipline.id}>{discipline.name}</h3>
 
-                    {categories.map((c) => (
-                      <div key={c.id}>
-                        <h4 key={c.id}>{c.name}</h4>
+                      {categories.map((c) => (
+                        <div key={c.id}>
+                          <h4 key={c.id}>{c.name}</h4>
 
-                        {getTestsOfDiscipline(discipline).map((td) => {
-                          return td
-                            .filter((t) => t.categoryId === c.id)
-                            .map((test) => {
-                              return (
-                                <p
-                                  key={test.id}
-                                >{`${test.name} (${test.teacher})`}</p>
-                              );
-                            });
-                        })}
-                      </div>
-                    ))}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      ))}
+                          {getTestsOfDiscipline(discipline).map((td) => {
+                            return td
+                              .filter((t) => t.categoryId === c.id)
+                              .map((test) => {
+                                return (
+                                  <p
+                                    key={test.id}
+                                  >{`${test.name} (${test.teacher})`}</p>
+                                );
+                              });
+                          })}
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

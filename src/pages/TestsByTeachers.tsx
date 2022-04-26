@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import useAuth from "../hooks/useAuth";
 import api from "../services/api";
 import { TestsByTeachersType, TeacherWithTestsData } from "../services/test";
-import { Button } from "../styledComponents/authComponents";
+import { Logo, Logout } from "../components";
 
 export default function TestsByTeacher() {
-  const navigate = useNavigate();
-
-  const { token, removeToken } = useAuth();
+  const { token } = useAuth();
 
   const [teachers, setTeachers] = useState<TeacherWithTestsData[] | null>(null);
 
@@ -55,11 +53,6 @@ export default function TestsByTeacher() {
     return Object.values(categoryTable).sort((a, b) => a.id - b.id);
   }
 
-  function logout() {
-    removeToken();
-    navigate("/");
-  }
-
   useEffect(() => {
     getTestsByTeachers();
   }, []);
@@ -69,42 +62,45 @@ export default function TestsByTeacher() {
   }
 
   return (
-    <div className="tests">
-      <Button variant="outlined" onClick={logout}>
-        Sair
-      </Button>
+    <div>
+      <div className="header">
+        <Logo />
+        <Logout />
+      </div>
 
-      <Link to="/tests-by-disciplines">
-        Ir para provas separadas por disciplina
-      </Link>
+      <div className="tests">
+        <Link to="/tests-by-disciplines">
+          Ir para provas separadas por disciplina
+        </Link>
 
-      {teachers.map((teacher) => {
-        const categories = getTestCategoriesOfTeacher(teacher);
+        {teachers.map((teacher) => {
+          const categories = getTestCategoriesOfTeacher(teacher);
 
-        return (
-          <div key={teacher.id}>
-            <h2>{teacher.name}</h2>
+          return (
+            <div key={teacher.id}>
+              <h2>{teacher.name}</h2>
 
-            {categories.map((c) => (
-              <div key={c.id}>
-                <h3 key={c.id}>{c.name}</h3>
+              {categories.map((c) => (
+                <div key={c.id}>
+                  <h3 key={c.id}>{c.name}</h3>
 
-                {getTestsOfTeacher(teacher).map((td) => {
-                  return td
-                    .filter((t) => t.categoryId === c.id)
-                    .map((test) => {
-                      return (
-                        <p
-                          key={test.id}
-                        >{`${test.name} (${test.discipline})`}</p>
-                      );
-                    });
-                })}
-              </div>
-            ))}
-          </div>
-        );
-      })}
+                  {getTestsOfTeacher(teacher).map((td) => {
+                    return td
+                      .filter((t) => t.categoryId === c.id)
+                      .map((test) => {
+                        return (
+                          <p
+                            key={test.id}
+                          >{`${test.name} (${test.discipline})`}</p>
+                        );
+                      });
+                  })}
+                </div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

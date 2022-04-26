@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { SignUp, Login, TestsByDisciplines, TestsByTeachers } from "../pages";
 import { AuthProvider } from "../contexts/AuthContext";
-import logo from "../logo.png";
 import "./style.css";
 
 export default function App() {
@@ -10,7 +9,6 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <div className="app">
-          <img src={logo} alt="Logo" />
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="sign-up" element={<SignUp />} />
