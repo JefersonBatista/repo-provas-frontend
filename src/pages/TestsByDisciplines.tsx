@@ -38,15 +38,7 @@ export default function TestsByDisciplines() {
 
   function getTestsOfDiscipline(discipline: DisciplineWithTestsData) {
     return discipline.teachersDisciplines.map((td) => {
-      return td.tests.map((test) => {
-        const { id, name } = test;
-        return {
-          categoryId: test.category.id,
-          id,
-          name,
-          teacher: td.teacher.name,
-        };
-      });
+      return td.tests.map((test) => ({ ...test, teacher: td.teacher.name }));
     });
   }
 
@@ -63,6 +55,16 @@ export default function TestsByDisciplines() {
     });
 
     return Object.values(categoryTable).sort((a, b) => a.id - b.id);
+  }
+
+  async function accessTestPdfUrl(id: number, pdfUrl: string) {
+    try {
+      await api.test.incrementViewCount(token, id);
+      getTestsByDisciplines();
+      window.open(pdfUrl);
+    } catch (error: any) {
+      alert(error.response.data);
+    }
   }
 
   useEffect(() => {
@@ -112,12 +114,20 @@ export default function TestsByDisciplines() {
 
                           {getTestsOfDiscipline(discipline).map((td) => {
                             return td
-                              .filter((t) => t.categoryId === c.id)
+                              .filter((t) => t.category.id === c.id)
                               .map((test) => {
                                 return (
-                                  <p
-                                    key={test.id}
-                                  >{`${test.name} (${test.teacher})`}</p>
+                                  <p key={test.id}>
+                                    <span
+                                      onClick={() =>
+                                        accessTestPdfUrl(test.id, test.pdfUrl)
+                                      }
+                                      style={{ cursor: "pointer" }}
+                                    >
+                                      {test.name}
+                                    </span>
+                                    {` (${test.teacher}) [${test.viewCount} visualizações]`}
+                                  </p>
                                 );
                               });
                           })}

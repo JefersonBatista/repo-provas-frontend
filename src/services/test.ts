@@ -24,6 +24,8 @@ interface Test {
   id: number;
   name: string;
   category: Category;
+  pdfUrl: string;
+  viewCount: number;
 }
 
 export type TeacherWithTestsData = Teacher & {
@@ -70,4 +72,16 @@ async function getTestsByTeachers(token: string) {
   );
 }
 
-export default { getTestsByDisciplines, getTestsByTeachers };
+async function incrementViewCount(token: string, id: number) {
+  return axiosInstance.patch(
+    `/tests/${id}/increment-view-count`,
+    {},
+    configAuth(token)
+  );
+}
+
+export default {
+  getTestsByDisciplines,
+  getTestsByTeachers,
+  incrementViewCount,
+};

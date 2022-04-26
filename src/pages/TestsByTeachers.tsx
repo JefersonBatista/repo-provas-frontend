@@ -6,7 +6,6 @@ import useAuth from "../hooks/useAuth";
 import api from "../services/api";
 import { TestsByTeachersType, TeacherWithTestsData } from "../services/test";
 import { Logo, Logout } from "../components";
-import { textAlign } from "@mui/system";
 
 export default function TestsByTeacher() {
   const { token } = useAuth();
@@ -29,15 +28,10 @@ export default function TestsByTeacher() {
 
   function getTestsOfTeacher(teacher: TeacherWithTestsData) {
     return teacher.teachersDisciplines.map((td) => {
-      return td.tests.map((test) => {
-        const { id, name } = test;
-        return {
-          categoryId: test.category.id,
-          id,
-          name,
-          discipline: td.discipline.name,
-        };
-      });
+      return td.tests.map((test) => ({
+        ...test,
+        discipline: td.discipline.name,
+      }));
     });
   }
 
@@ -54,6 +48,16 @@ export default function TestsByTeacher() {
     });
 
     return Object.values(categoryTable).sort((a, b) => a.id - b.id);
+  }
+
+  async function accessTestPdfUrl(id: number, pdfUrl: string) {
+    try {
+      await api.test.incrementViewCount(token, id);
+      getTestsByTeachers();
+      window.open(pdfUrl);
+    } catch (error: any) {
+      alert(error.response.data);
+    }
   }
 
   useEffect(() => {
@@ -102,12 +106,20 @@ export default function TestsByTeacher() {
 
                     {getTestsOfTeacher(teacher).map((td) => {
                       return td
-                        .filter((t) => t.categoryId === c.id)
+                        .filter((t) => t.category.id === c.id)
                         .map((test) => {
                           return (
-                            <p
-                              key={test.id}
-                            >{`${test.name} (${test.discipline})`}</p>
+                            <p key={test.id}>
+                              <span
+                                onClick={() =>
+                                  accessTestPdfUrl(test.id, test.pdfUrl)
+                                }
+                                style={{ cursor: "pointer" }}
+                              >
+                                {test.name}
+                              </span>
+                              {` (${test.discipline}) [${test.viewCount} visualizações]`}
+                            </p>
                           );
                         });
                     })}
