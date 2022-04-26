@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import useAuth from "../hooks/useAuth";
 import api from "../services/api";
+import { TestsByTeachers, TeacherWithTestsData } from "../services/test";
 import { Button } from "../styledComponents/authComponents";
 
 export default function TestsByTeacher() {
@@ -10,12 +11,12 @@ export default function TestsByTeacher() {
 
   const { token, removeToken } = useAuth();
 
-  const [teachers, setTeachers] = useState<any[] | null>(null);
+  const [teachers, setTeachers] = useState<TeacherWithTestsData[] | null>(null);
 
   async function getTestsByTeachers() {
     try {
       const { data } = await api.test.getTestsByTeachers(token);
-      const { teachers: teachersData } = data;
+      const { teachers: teachersData } = data as TestsByTeachers;
 
       setTeachers(teachersData);
     } catch (error) {
@@ -25,7 +26,7 @@ export default function TestsByTeacher() {
     }
   }
 
-  function getTestsOfTeacher(teacher) {
+  function getTestsOfTeacher(teacher: TeacherWithTestsData) {
     return teacher.teachersDisciplines.map((td) => {
       return td.tests.map((test) => {
         const { id, name } = test;
@@ -39,8 +40,8 @@ export default function TestsByTeacher() {
     });
   }
 
-  function getTestCategoriesOfTeacher(teacher) {
-    const categoryTable = {};
+  function getTestCategoriesOfTeacher(teacher: TeacherWithTestsData) {
+    const categoryTable: { [key: number]: { id: number; name: string } } = {};
 
     teacher.teachersDisciplines.forEach((td) => {
       td.tests.forEach((test) => {
