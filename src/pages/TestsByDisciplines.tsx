@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import api from "../services/api";
 import {
-  TestsByDisciplines,
+  TestsByDisciplinesType,
   TermWithTestsData,
   DisciplineWithTestsData,
 } from "../services/test";
@@ -20,7 +20,7 @@ export default function TestsByDisciplines() {
   async function getTestsByDisciplines() {
     try {
       const { data } = await api.test.getTestsByDisciplines(token);
-      const { terms: termsData } = data as TestsByDisciplines;
+      const { terms: termsData } = data as TestsByDisciplinesType;
 
       setTerms(termsData);
     } catch (error) {

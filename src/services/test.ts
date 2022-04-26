@@ -32,7 +32,7 @@ export type TeacherWithTestsData = Teacher & {
     tests: Test[];
   }[];
 };
-export interface TestsByTeachers {
+export interface TestsByTeachersType {
   teachers: TeacherWithTestsData[];
 }
 
@@ -52,19 +52,19 @@ export type DisciplineWithTestsData = Discipline & {
   }[];
 };
 
-export interface TestsByDisciplines {
+export interface TestsByDisciplinesType {
   terms: TermWithTestsData[];
 }
 
 async function getTestsByDisciplines(token: string) {
-  return axiosInstance.get<TestsByDisciplines>(
+  return axiosInstance.get<TestsByDisciplinesType>(
     "/tests-by-disciplines",
     configAuth(token)
   );
 }
 
 async function getTestsByTeachers(token: string) {
-  return axiosInstance.get<TestsByTeachers>(
+  return axiosInstance.get<TestsByTeachersType>(
     "/tests-by-teachers",
     configAuth(token)
   );

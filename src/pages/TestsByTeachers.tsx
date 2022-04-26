@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import useAuth from "../hooks/useAuth";
 import api from "../services/api";
-import { TestsByTeachers, TeacherWithTestsData } from "../services/test";
+import { TestsByTeachersType, TeacherWithTestsData } from "../services/test";
 import { Button } from "../styledComponents/authComponents";
 
 export default function TestsByTeacher() {
@@ -16,7 +16,7 @@ export default function TestsByTeacher() {
   async function getTestsByTeachers() {
     try {
       const { data } = await api.test.getTestsByTeachers(token);
-      const { teachers: teachersData } = data as TestsByTeachers;
+      const { teachers: teachersData } = data as TestsByTeachersType;
 
       setTeachers(teachersData);
     } catch (error) {
