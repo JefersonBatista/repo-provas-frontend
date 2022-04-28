@@ -6,8 +6,10 @@ const Form = styled.form`
   justify-content: center;
   gap: 15px;
 
-  width: 500px;
-  min-height: 100vh;
+  max-width: 500px;
+  width: 100vw;
+  height: 100%;
+  padding: 0 10px;
 
   div {
     display: flex;

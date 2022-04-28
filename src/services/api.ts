@@ -5,7 +5,7 @@ import auth from "./auth";
 import test from "./test";
 
 export const axiosInstance = axios.create({
-  baseURL: "https://jeff-repo-provas.herokuapp.com",
+  baseURL: "http://localhost:4000",
 });
 
 export function configAuth(token: string) {

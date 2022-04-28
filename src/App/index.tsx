@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SignUp, Login, TestsByDisciplines, TestsByTeachers } from "../pages";
 import { AuthProvider } from "../contexts/AuthContext";
 import "./style.css";
+import AddTest from "../pages/AddTest";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
               element={<TestsByDisciplines />}
             />
             <Route path="tests-by-teachers" element={<TestsByTeachers />} />
+            <Route path="add-test" element={<AddTest />} />
           </Routes>
         </div>
       </AuthProvider>

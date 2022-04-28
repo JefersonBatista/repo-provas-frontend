@@ -1,9 +1,10 @@
 import { SyntheticEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { Input, Button } from "@mui/material";
 
 import api from "../services/api";
 import { Logo } from "../components";
-import { Form, AuthInput, Button } from "../styledComponents/authComponents";
+import Form from "../styledComponents/Form";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -52,29 +53,32 @@ export default function SignUp() {
     <>
       <Logo />
       <Form onSubmit={handleSubmit}>
-        <AuthInput
+        <Input
           type="email"
           name="email"
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
           disabled={loading}
+          fullWidth
         />
-        <AuthInput
+        <Input
           type="password"
           name="password"
           placeholder="Senha"
           value={formData.password}
           onChange={handleChange}
           disabled={loading}
+          fullWidth
         />
-        <AuthInput
+        <Input
           type="password"
           name="repeatPassword"
           placeholder="Confirme sua senha"
           value={formData.repeatPassword}
           onChange={handleChange}
           disabled={loading}
+          fullWidth
         />
 
         <div>

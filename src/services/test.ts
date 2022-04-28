@@ -28,6 +28,14 @@ interface Test {
   viewCount: number;
 }
 
+export interface CreateTestData {
+  name: string;
+  pdfUrl: string;
+  categoryId: number;
+  disciplineId: number;
+  teacherId: number;
+}
+
 export type TeacherWithTestsData = Teacher & {
   teachersDisciplines: {
     discipline: Discipline;
@@ -80,8 +88,13 @@ async function incrementViewCount(token: string, id: number) {
   );
 }
 
+async function add(token: string, data: CreateTestData) {
+  return axiosInstance.post(`/tests`, data, configAuth(token));
+}
+
 export default {
   getTestsByDisciplines,
   getTestsByTeachers,
   incrementViewCount,
+  add,
 };

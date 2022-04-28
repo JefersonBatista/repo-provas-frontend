@@ -86,6 +86,7 @@ export default function TestsByDisciplines() {
         <Link to="/tests-by-teachers">
           Ir para provas separadas por pessoa instrutora
         </Link>
+        <Link to="/add-test">Adicionar prova</Link>
 
         <Input
           placeholder="Filtre por disciplina"
@@ -126,7 +127,9 @@ export default function TestsByDisciplines() {
                                     >
                                       {test.name}
                                     </span>
-                                    {` (${test.teacher}) [${test.viewCount} visualizações]`}
+                                    <span className="info">
+                                      {` (${test.teacher}) [${test.viewCount} visualizações]`}
+                                    </span>
                                   </p>
                                 );
                               });

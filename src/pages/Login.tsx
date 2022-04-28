@@ -1,10 +1,11 @@
-import { SyntheticEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { Button, Input } from "@mui/material";
 
 import api from "../services/api";
 import useAuth from "../hooks/useAuth";
 import { Logo } from "../components";
-import { Form, AuthInput, Button } from "../styledComponents/authComponents";
+import Form from "../styledComponents/Form";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export default function Login() {
     setFormData({ ...formData, [target.name]: target.value });
   }
 
-  async function handleSubmit(event: SyntheticEvent) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setLoading(true);
@@ -47,21 +48,23 @@ export default function Login() {
     <>
       <Logo />
       <Form onSubmit={handleSubmit}>
-        <AuthInput
+        <Input
           type="email"
           name="email"
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
           disabled={loading}
+          fullWidth
         />
-        <AuthInput
+        <Input
           type="password"
           name="password"
           placeholder="Senha"
           value={formData.password}
           onChange={handleChange}
           disabled={loading}
+          fullWidth
         />
 
         <div>
