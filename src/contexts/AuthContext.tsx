@@ -1,10 +1,4 @@
-import {
-  createContext,
-  ReactChild,
-  ReactFragment,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface AuthContextValue {
@@ -19,11 +13,7 @@ const AuthContext = createContext<AuthContextValue>({
   removeToken: () => {},
 });
 
-export function AuthProvider({
-  children,
-}: {
-  children: ReactChild | ReactFragment;
-}) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
 
   const retrievedToken = localStorage.getItem("repo-provas-token");

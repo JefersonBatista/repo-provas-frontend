@@ -4,7 +4,11 @@ import { Input } from "@mui/material";
 
 import useAuth from "../hooks/useAuth";
 import api from "../services/api";
-import { TestsByTeachersType, TeacherWithTestsData } from "../services/test";
+import {
+  TestsByTeachersType,
+  TeacherWithTestsData,
+  Category,
+} from "../services/types";
 import { Logo, Logout } from "../components";
 
 export default function TestsByTeacher() {
@@ -36,18 +40,22 @@ export default function TestsByTeacher() {
   }
 
   function getTestCategoriesOfTeacher(teacher: TeacherWithTestsData) {
-    const categoryTable: { [key: number]: { id: number; name: string } } = {};
+    const ids = new Set<number>();
+    const categories = [] as Category[];
 
     teacher.teachersDisciplines.forEach((td) => {
       td.tests.forEach((test) => {
-        const c = test.category;
-        if (!categoryTable[c.id]) {
-          categoryTable[c.id] = c;
+        const category = test.category;
+
+        if (!ids.has(category.id)) {
+          ids.add(category.id);
+          categories.push(category);
         }
       });
     });
 
-    return Object.values(categoryTable).sort((a, b) => a.id - b.id);
+    categories.sort((a, b) => a.id - b.id);
+    return categories;
   }
 
   async function accessTestPdfUrl(id: number, pdfUrl: string) {

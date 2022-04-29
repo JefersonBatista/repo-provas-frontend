@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button, Input } from "@mui/material";
 
@@ -21,9 +21,7 @@ export default function Login() {
 
   function handleChange({
     target,
-  }: {
-    target: { name: string; value: string };
-  }) {
+  }: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
     setFormData({ ...formData, [target.name]: target.value });
   }
 
@@ -54,6 +52,7 @@ export default function Login() {
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
+          required
           disabled={loading}
           fullWidth
         />
@@ -63,6 +62,7 @@ export default function Login() {
           placeholder="Senha"
           value={formData.password}
           onChange={handleChange}
+          required
           disabled={loading}
           fullWidth
         />

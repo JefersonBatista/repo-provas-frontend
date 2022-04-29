@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Input, Button } from "@mui/material";
 
@@ -19,13 +19,11 @@ export default function SignUp() {
 
   function handleChange({
     target,
-  }: {
-    target: { name: string; value: string };
-  }) {
+  }: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
     setFormData({ ...formData, [target.name]: target.value });
   }
 
-  async function handleSubmit(event: SyntheticEvent) {
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
     setLoading(true);
@@ -59,6 +57,7 @@ export default function SignUp() {
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
+          required
           disabled={loading}
           fullWidth
         />
@@ -68,6 +67,7 @@ export default function SignUp() {
           placeholder="Senha"
           value={formData.password}
           onChange={handleChange}
+          required
           disabled={loading}
           fullWidth
         />
@@ -77,6 +77,7 @@ export default function SignUp() {
           placeholder="Confirme sua senha"
           value={formData.repeatPassword}
           onChange={handleChange}
+          required
           disabled={loading}
           fullWidth
         />

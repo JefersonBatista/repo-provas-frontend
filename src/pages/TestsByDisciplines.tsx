@@ -7,7 +7,8 @@ import {
   TestsByDisciplinesType,
   TermWithTestsData,
   DisciplineWithTestsData,
-} from "../services/test";
+  Category,
+} from "../services/types";
 import useAuth from "../hooks/useAuth";
 import { Logo, Logout } from "../components";
 
@@ -43,18 +44,22 @@ export default function TestsByDisciplines() {
   }
 
   function getTestCategoriesOfDiscipline(discipline: DisciplineWithTestsData) {
-    const categoryTable: { [key: number]: { id: number; name: string } } = {};
+    const ids = new Set<number>();
+    const categories = [] as Category[];
 
     discipline.teachersDisciplines.forEach((td) => {
       td.tests.forEach((test) => {
-        const c = test.category;
-        if (!categoryTable[c.id]) {
-          categoryTable[c.id] = c;
+        const category = test.category;
+
+        if (!ids.has(category.id)) {
+          ids.add(category.id);
+          categories.push(category);
         }
       });
     });
 
-    return Object.values(categoryTable).sort((a, b) => a.id - b.id);
+    categories.sort((a, b) => a.id - b.id);
+    return categories;
   }
 
   async function accessTestPdfUrl(id: number, pdfUrl: string) {
