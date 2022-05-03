@@ -116,7 +116,7 @@ export default function AddTest() {
         <Logout />
       </div>
 
-      <PageSelector loading={loading} />
+      <PageSelector page="add" loading={loading} />
 
       <Form className="add-test" onSubmit={handleSubmit}>
         <TextField

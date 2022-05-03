@@ -86,7 +86,7 @@ export default function TestsByDisciplines() {
         <Logout />
       </div>
 
-      <PageSelector loading={false} />
+      <PageSelector page="disciplines" loading={false} />
 
       <div className="tests">
         <Input

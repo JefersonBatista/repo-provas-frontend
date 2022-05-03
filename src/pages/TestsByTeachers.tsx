@@ -82,7 +82,7 @@ export default function TestsByTeacher() {
         <Logout />
       </div>
 
-      <PageSelector loading={false} />
+      <PageSelector page="teachers" loading={false} />
 
       <div className="tests">
         <Input
