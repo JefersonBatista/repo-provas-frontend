@@ -1,5 +1,4 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { TextField, MenuItem, Button } from "@mui/material";
 
 import useAuth from "../hooks/useAuth";
@@ -10,7 +9,7 @@ import {
   Teacher,
   CreateTestData,
 } from "../services/types";
-import { Logo, Logout } from "../components";
+import { Logo, Logout, PageSelector } from "../components";
 import Form from "../styledComponents/Form";
 
 export default function AddTest() {
@@ -117,14 +116,9 @@ export default function AddTest() {
         <Logout />
       </div>
 
-      <Form className="add-test" onSubmit={handleSubmit}>
-        <Link to={loading ? "#" : "/tests-by-disciplines"}>
-          Ir para provas separadas por disciplina
-        </Link>
-        <Link to={loading ? "#" : "/tests-by-teachers"}>
-          Ir para provas separadas por pessoa instrutora
-        </Link>
+      <PageSelector loading={loading} />
 
+      <Form className="add-test" onSubmit={handleSubmit}>
         <TextField
           type="text"
           name="name"

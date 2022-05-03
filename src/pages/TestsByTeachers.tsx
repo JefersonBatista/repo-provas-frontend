@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Input } from "@mui/material";
 
 import useAuth from "../hooks/useAuth";
@@ -9,7 +8,7 @@ import {
   TeacherWithTestsData,
   Category,
 } from "../services/types";
-import { Logo, Logout } from "../components";
+import { Logo, Logout, PageSelector } from "../components";
 
 export default function TestsByTeacher() {
   const { token } = useAuth();
@@ -83,12 +82,9 @@ export default function TestsByTeacher() {
         <Logout />
       </div>
 
-      <div className="tests">
-        <Link to="/tests-by-disciplines">
-          Ir para provas separadas por disciplina
-        </Link>
-        <Link to="/add-test">Adicionar prova</Link>
+      <PageSelector loading={false} />
 
+      <div className="tests">
         <Input
           placeholder="Filtre por pessoa instrutora"
           autoFocus
